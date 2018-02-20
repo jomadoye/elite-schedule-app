@@ -1,0 +1,62 @@
+
+<ion-header>
+
+    <!-- <ion-navbar color="primary">
+      <ion-title>{{team.name}} (temp)</ion-title>
+    </ion-navbar> -->
+    <ion-navbar></ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content>
+    <ion-refresher (ionRefresh)="refreshAll($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col col-6>
+            <h2>Record: {{teamStanding.wins}}-{{teamStanding.losses}}</h2>
+            <p>Coach: {{team.coach}}</p>
+          </ion-col>
+          <ion-col col-6 text-right>
+            <button ion-button icon-left outline (click)="toggleFollow()" *ngIf="!isFollowing">
+              <ion-icon name="star"></ion-icon>
+              Add Favorite
+            </button>
+            <button ion-button icon-only (click)="toggleFollow()" *ngIf="isFollowing">
+              <ion-icon name="star"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+  
+        <ion-item>
+          <ion-label>Date Filter:</ion-label>
+          <ion-toggle [(ngModel)]="useDateFilter" (ionChange)="dateChanged()"></ion-toggle>
+          <ion-datetime displayFormat="M/D/YYYY" pickerFormat="M/D/YYYY" [(ngModel)]="dateFilter" (ionChange)="dateChanged()" [(disabled)]="!useDateFilter"></ion-datetime>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  
+    <ion-list>
+      <ion-item *ngFor="let game of games" (click)="gameClicked($event, game)">
+        <ion-row justify-content-start>
+          <ion-col col-3>
+            <p>{{game.time | date:'M/d/yy'}}</p>
+            <p>{{game.time | date:'shortTime'}}</p>
+          </ion-col>
+          <ion-col col-6>
+            <p>{{game.homeAway}} {{game.opponent}}</p>
+            <p>{{game.location}}</p>
+          </ion-col>
+          <ion-col col-3>
+            <h4>{{game.scoreDisplay}}</h4>
+            <ion-badge [color]="getScoreDisplayBadgeClass(game)">{{getScoreWorL(game)}}</ion-badge>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  
+  </ion-content>
+  
